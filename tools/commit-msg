@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Sample Pit integration hook.
 #
@@ -59,7 +59,8 @@ if [ -n "$pit_task" ]; then
 
   commit="`grep -v "^#" $1`"
   append="[task ${pit_task}, status:${status}]"
-  echo >&2 "$append" >> "$1"
+  # Add Pit task number at the end of the first line of commit msg
+  sed -i " 1 s/.*/& $append/" $1
   "${pit}" task -e "${pit_task}" -s "${status}"
   "${pit}" note -c "${commit} ${append}"
   exit 0
