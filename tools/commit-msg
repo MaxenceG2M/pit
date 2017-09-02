@@ -62,6 +62,8 @@ if [ -n "$pit_task" ]; then
   # Add Pit task number at the end of the first line of commit msg
   sed -i " 1 s/.*/& $append/" $1
   "${pit}" task -e "${pit_task}" -s "${status}"
-  "${pit}" note -c "${commit} ${append}"
+  # Re-evaluate commit message to create note
+  commit="`grep -v "^#" $1`"
+  "${pit}" note -c "${commit}"
   exit 0
 fi
